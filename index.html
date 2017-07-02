@@ -6,15 +6,22 @@
 	<style>
 		body { background:#eee; margin:1em;}
 		canvas {
-			display:block; margin:0em auto; border:2px solid #f00;z-index: 4; position: absolute;
+			display:block; margin:0em auto; z-index: 4; position: absolute;
 			background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
 			background-size: 32px 32px;
 			background-position: 0 0, 0 16px, 16px -16px, -16px 0px;
 		}
 		#circle { pointer-events: none; margin:0em auto;
 			width:256px; height:256px;
-			border:2px solid #f00; border-radius: 50%;
+			border: 2px solid #f00; border-radius: 50%;
 			z-index: 5; position: absolute;
+		}
+		#square {
+			position: relative;
+			width: 256px;
+			height: 256px;
+			border: 2px solid #f00;
+			overflow: hidden;
 		}
 	</style>
 </head>
@@ -23,11 +30,13 @@
   <p><a href="https://github.com/edent/AvatarPreview">Source Code on GitHub</a> - <a href="https://shkspr.mobi/blog/2017/07/previewing-circular-avatars/">Read the blog post</a></p>
 	<p>To save the square image, right-click on the image and choose "Save Image".</p>
 	<input type='file' id='uploader' />
-	<div>
+	<div id='square'>
 		<div id='circle'></div>
 		<canvas></canvas>
 	</div>
-
+	<input type='checkbox' id='checkbox_showCircle' name='showCircle' checked />Show circle
+	<br />
+	<input type='checkbox' id='checkbox_showOnlyCircle' name='showOnlyCircle' />Show only circle
 <script>
 
 	var canvas = document.getElementsByTagName('canvas')[0];
@@ -181,7 +190,31 @@
 		}
 	}
 
+	var circleDiv=document.getElementById("circle");
+	circleDiv.style.visibility="visible";
+	circleDiv.style.top="0";
+	circleDiv.style.left="0";
 
+	document.getElementById("checkbox_showCircle").addEventListener('click',function() {
+		if (circleDiv.style.visibility == "visible") {
+			circleDiv.style.visibility="hidden";
+		} else {
+			circleDiv.style.visibility="visible";
+		}
+	},false);
+
+
+	document.getElementById("checkbox_showOnlyCircle").addEventListener('click',function() {
+		if (parseInt(circleDiv.style.top) == 0) {
+			circleDiv.style.top="-128px";
+			circleDiv.style.left="-128px";
+			circleDiv.style.borderWidth="128px";			
+		} else {
+			circleDiv.style.top="0";
+			circleDiv.style.left="0";
+			circleDiv.style.borderWidth="2px";
+		}
+	},false);
 </script>
 </body>
 </html>
